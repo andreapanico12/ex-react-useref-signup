@@ -3,6 +3,10 @@ import { useState } from "react"
 
 function RegistrationForm() {
 
+  const letters = "abcdefghijklmnopqrstuvwxyz"; 
+  const numbers = "0123456789"; 
+  const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
+
   const defaultData = {fullName: "",
     userName: "",
     password: "",
@@ -44,8 +48,24 @@ function RegistrationForm() {
     setFormData(defaultData)
   }
 
+  // VALIDAZIONI IN TEMPO REALE
+
+  const isValidUserName = formData.userName.length >= 6 &&
+    [...formData.userName].every((char) => letters.includes(char) || numbers.includes(char));
 
 
+  const errorMessageUserName = isValidUserName ? "Username valido" : "Lo username deve essere lungo almeno 6 caratteri e può contenere solo lettere e numeri";
+
+
+  const isValidPassword = formData.password.length >= 8 &&
+    [...formData.password].some((char) => letters.includes(char)) &&
+    [...formData.password].some((char) => numbers.includes(char)) &&
+    [...formData.password].some((char) => symbols.includes(char));
+  
+  const errorMessagePassword = isValidPassword ? "Password valida" : "La password deve essere lunga almeno 8 caratteri e deve contenere almeno una lettera, un numero e un simbolo";
+
+  const isValidDescription = formData.description.trim().length >= 100 && formData.description.trim().length <= 1000; 
+  const errorMessageDescription = isValidDescription ? "Descrizione valida" : "La descrizione deve essere lunga tra 100 e 1000 caratteri";
 
 
   return (
@@ -58,11 +78,13 @@ function RegistrationForm() {
       <div>
         <label htmlFor="username">Username</label>
         <input type="text" id="username" name="userName" value={formData.userName} onChange={handleChange} />
+        <p style={ {color: isValidUserName ? "green" : "red"}}>{errorMessageUserName}</p>
       </div>
 
       <div>
         <label htmlFor="password">Password</label>
         <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} />
+        <p style={ {color: isValidPassword ? "green" : "red"}}>{errorMessagePassword}</p>
       </div>
 
       <div>
@@ -83,6 +105,7 @@ function RegistrationForm() {
       <div>
         <label htmlFor="description">Breve descrizione</label>
         <textarea id="description" name="description" rows="4" value={formData.description} onChange={handleChange}></textarea>
+        <p style={ {color: isValidDescription ? "green" : "red"}}>{errorMessageDescription}</p>
       </div>
 
       <button type="submit">Registrati</button>
