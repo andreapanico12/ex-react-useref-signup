@@ -3,14 +3,15 @@ import { useState } from "react"
 
 function RegistrationForm() {
 
-  const [formData, setFormData] = useState({
-    fullName: "",
+  const defaultData = {fullName: "",
     userName: "",
     password: "",
     specialization: "",
     experience: "",
     description: ""
-  })
+  }
+
+  const [formData, setFormData] = useState(defaultData);
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -23,7 +24,24 @@ function RegistrationForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+
+    // Validazione dei dati
+    if (!formData.fullName ||
+      !formData.userName ||
+      !formData.password ||
+      !formData.specialization ||
+      !formData.experience ||
+      !formData.description
+    ) {
+      alert("Tutti i campi sono obbligatori");
+      return;
+    } 
+    if (formData.experience < 0) {
+      alert("Gli anni di esperienza non possono essere negativi");
+      return;
+    }
+    console.log("Dati del form:" ,formData);
+    setFormData(defaultData)
   }
 
 
