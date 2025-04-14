@@ -15,6 +15,7 @@ function RegistrationForm() {
   const fullNameRef = useRef();
   const specializationRef = useRef();
   const experienceRef = useRef();
+  const formRef = useRef();
 
   useEffect(() => {
     fullNameRef.current.focus();
@@ -86,7 +87,7 @@ function RegistrationForm() {
 
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form ref= {formRef} onSubmit={handleSubmit}>
       <div>
         <label htmlFor="fullName">Nome completo</label>
         <input type="text" id="fullName" name="fullName" ref={fullNameRef} />
@@ -127,6 +128,13 @@ function RegistrationForm() {
 
       <button type="submit">Registrati</button>
       <button type="reset" onClick={handleReset}>Reset</button>
+      <button 
+  className="scroll-to-top" 
+  type="button" 
+  onClick={() => formRef.current.scrollIntoView({ behavior: 'smooth' })}
+>
+  ⬆
+</button>
     </form>
   )
 }
