@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 
 
 function RegistrationForm() {
@@ -7,64 +7,65 @@ function RegistrationForm() {
   const numbers = "0123456789"; 
   const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
 
-  const defaultData = {fullName: "",
-    userName: "",
-    password: "",
-    specialization: "",
-    experience: "",
-    description: ""
+
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [description, setDescription] = useState("");
+
+  const fullNameRef = useRef();
+  const specializationRef = useRef();
+  const experienceRef = useRef();
+
+  const defaultData = {
+    fullName: fullNameRef.current.value,
+    userName: userName,
+    password: password,
+    specialization: specializationRef.current.value,
+    experience:  experienceRef.current.value,
+    description: description
   }
 
-  const [formData, setFormData] = useState(defaultData);
-
-  const handleChange = (e) => {
-    const {name, value} = e.target;
-
-    setFormData ((prevData) => ({
-      ...prevData,
-      [name]: value
-    }))
-  }
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Validazione dei dati
-    if (!formData.fullName ||
-      !formData.userName ||
-      !formData.password ||
-      !formData.specialization ||
-      !formData.experience ||
-      !formData.description
+    if (!fullNameRef ||
+      !userName ||
+      !password ||
+      !specializationRef ||
+      !experienceRef ||
+      !description
     ) {
       alert("Tutti i campi sono obbligatori");
       return;
     } 
-    if (formData.experience < 0) {
+    if (experienceRef.current.value < 0) {
       alert("Gli anni di esperienza non possono essere negativi");
       return;
     }
-    console.log("Dati del form:" ,formData);
-    setFormData(defaultData)
+    console.log("Dati del form:", defaultData);
+    
   }
 
   // VALIDAZIONI IN TEMPO REALE
 
-  const isValidUserName = formData.userName.length >= 6 &&
-    [...formData.userName].every((char) => letters.includes(char) || numbers.includes(char));
+  const isValidUserName = userName.length >= 6 &&
+    [...userName].every((char) => letters.includes(char) || numbers.includes(char));
 
 
   const errorMessageUserName = isValidUserName ? "Username valido" : "Lo username deve essere lungo almeno 6 caratteri e può contenere solo lettere e numeri";
 
 
-  const isValidPassword = formData.password.length >= 8 &&
-    [...formData.password].some((char) => letters.includes(char)) &&
-    [...formData.password].some((char) => numbers.includes(char)) &&
-    [...formData.password].some((char) => symbols.includes(char));
+  const isValidPassword = password.length >= 8 &&
+    [...password].some((char) => letters.includes(char)) &&
+    [...password].some((char) => numbers.includes(char)) &&
+    [...password].some((char) => symbols.includes(char));
   
   const errorMessagePassword = isValidPassword ? "Password valida" : "La password deve essere lunga almeno 8 caratteri e deve contenere almeno una lettera, un numero e un simbolo";
 
-  const isValidDescription = formData.description.trim().length >= 100 && formData.description.trim().length <= 1000; 
+  const isValidDescription = description.trim().length >= 100 && description.trim().length <= 1000; 
   const errorMessageDescription = isValidDescription ? "Descrizione valida" : "La descrizione deve essere lunga tra 100 e 1000 caratteri";
 
 
@@ -72,24 +73,24 @@ function RegistrationForm() {
     <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="fullName">Nome completo</label>
-        <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} />
+        <input type="text" id="fullName" name="fullName" ref={fullNameRef} />
       </div>
 
       <div>
         <label htmlFor="username">Username</label>
-        <input type="text" id="username" name="userName" value={formData.userName} onChange={handleChange} />
+        <input type="text" id="username" name="userName" value={userName} onChange={e => setUserName(e.target.value)} />
         <p style={ {color: isValidUserName ? "green" : "red"}}>{errorMessageUserName}</p>
       </div>
 
       <div>
         <label htmlFor="password">Password</label>
-        <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} />
+        <input type="password" id="password" name="password" value={password} onChange={e => setPassword(e.target.value)} />
         <p style={ {color: isValidPassword ? "green" : "red"}}>{errorMessagePassword}</p>
       </div>
 
       <div>
         <label htmlFor="specialization">Specializzazione</label>
-        <select id="specialization" name="specialization" value={formData.specialisation} onChange={handleChange}>
+        <select id="specialization" name="specialization" ref={specializationRef}>
           <option value="">Seleziona una specializzazione</option>
           <option value="fullstack">Full Stack</option>
           <option value="frontend">Frontend</option>
@@ -99,12 +100,12 @@ function RegistrationForm() {
 
       <div>
         <label htmlFor="experience">Anni di esperienza</label>
-        <input type="number" id="experience" name="experience" min="0" value={formData.experience} onChange={handleChange}/>
+        <input type="number" id="experience" name="experience" min="0" ref={experienceRef}/>
       </div>
 
       <div>
         <label htmlFor="description">Breve descrizione</label>
-        <textarea id="description" name="description" rows="4" value={formData.description} onChange={handleChange}></textarea>
+        <textarea id="description" name="description" rows="4" value={description} onChange={e => setDescription(e.target.value)}></textarea>
         <p style={ {color: isValidDescription ? "green" : "red"}}>{errorMessageDescription}</p>
       </div>
 
