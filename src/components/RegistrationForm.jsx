@@ -7,7 +7,7 @@ function RegistrationForm() {
     fullName: "",
     userName: "",
     password: "",
-    specialisation: "",
+    specialization: "",
     experience: "",
     description: ""
   })
@@ -21,12 +21,17 @@ function RegistrationForm() {
     }))
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+  }
+
 
 
 
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="fullName">Nome completo</label>
         <input type="text" id="fullName" name="fullName" value={formData.fullName} onChange={handleChange} />
@@ -34,7 +39,7 @@ function RegistrationForm() {
 
       <div>
         <label htmlFor="username">Username</label>
-        <input type="text" id="username" name="username" value={formData.userName} onChange={handleChange} />
+        <input type="text" id="username" name="userName" value={formData.userName} onChange={handleChange} />
       </div>
 
       <div>

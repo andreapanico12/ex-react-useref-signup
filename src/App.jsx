@@ -1,10 +1,10 @@
-
+import RegistrationForm from "./components/RegistrationForm"
 
 function App() {
   
   return (
     <>
-      
+      <RegistrationForm />
     </>
   )
 }
