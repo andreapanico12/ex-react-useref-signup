@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 
 
 function RegistrationForm() {
@@ -16,19 +16,25 @@ function RegistrationForm() {
   const specializationRef = useRef();
   const experienceRef = useRef();
 
-  const defaultData = {
-    fullName: fullNameRef.current.value,
-    userName: userName,
-    password: password,
-    specialization: specializationRef.current.value,
-    experience:  experienceRef.current.value,
-    description: description
-  }
+  useEffect(() => {
+    fullNameRef.current.focus();
+  }, []);
+
 
   
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const defaultData = {
+      fullName: fullNameRef.current.value,
+      userName: userName,
+      password: password,
+      specialization: specializationRef.current,
+      experience:  experienceRef.current,
+      description: description
+    }
+  
 
     // Validazione dei dati
     if (!fullNameRef ||
@@ -47,6 +53,16 @@ function RegistrationForm() {
     }
     console.log("Dati del form:", defaultData);
     
+  }
+
+  //RESET
+  const handleReset = () => {
+    setUserName("");
+    setPassword("");
+    setDescription("");
+    fullNameRef.current.value = "";
+    specializationRef.current.value = "";
+    experienceRef.current.value = "";
   }
 
   // VALIDAZIONI IN TEMPO REALE
@@ -110,6 +126,7 @@ function RegistrationForm() {
       </div>
 
       <button type="submit">Registrati</button>
+      <button type="reset" onClick={handleReset}>Reset</button>
     </form>
   )
 }

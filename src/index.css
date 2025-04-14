@@ -54,3 +54,17 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #005fa3;
 }
+button[type="reset"] {
+  background-color: red;
+  color: black;
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button[type="reset"]:hover {
+  background-color: rebeccapurple;
+}
